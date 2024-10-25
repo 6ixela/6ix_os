@@ -1,7 +1,7 @@
 ; boot.asm
 [org 0x7c00]
 
-%include "print_string.asm"
+
 start:
     mov bx, HELLO_WORLD
     pusha
@@ -13,5 +13,6 @@ start:
 HELLO_WORLD:
     db 'Hello, World!', 0
 
+%include "print_string.asm"
 times 510 - ($ - $$) db 0
 dw 0xaa55                   ; Signature du bootloader
