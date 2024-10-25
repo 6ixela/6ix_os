@@ -17,10 +17,7 @@ $(BIN_FILE): $(BOOT_OBJ)
 	cp $(BOOT_OBJ) $(BIN_FILE)
 
 $(BOOT_OBJ): $(BOOT_DIR)/boot.asm
-	$(NASM) -f bin $(BOOT_DIR)/boot.asm -o $(BOOT_OBJ)
-
-# $(KERNEL_OBJ): $(SRC_DIR)/kernel.c
-# $(CC) -ffreestanding -c $(SRC_DIR)/kernel.c -o $(KERNEL_OBJ) -I$(INC_DIR)
+	$(NASM) -f bin -I 'boot/' $(BOOT_DIR)/boot.asm -o $(BOOT_OBJ)
 
 run: $(BIN_FILE)
 	$(QEMU) -drive format=raw,file=$(BIN_FILE) -m 512

@@ -1,22 +1,17 @@
 ; boot.asm
+[org 0x7c00]
+
+%include "print_string.asm"
 start:
-    mov ah, 0x03
-    int 0x10
-
-    mov al, 'H'
-    int 0x10
-    mov al, 'e'
-    int 0x10
-    mov al, 'l'
-    int 0x10
-    int 0x10
-    mov al, 'o'
-    int 0x10
-
+    mov bx, HELLO_WORLD
+    pusha
+    call print_string
+    popa
     ; Boucle infinie
-loop:
-    jmp loop
+    jmp $
 
-; Remplissage pour atteindre 512 octets (taille d'un secteur)
+HELLO_WORLD:
+    db 'Hello, World!', 0
+
 times 510 - ($ - $$) db 0
-dw 0xaa55             ; Signature du bootloader
+dw 0xaa55                   ; Signature du bootloader
