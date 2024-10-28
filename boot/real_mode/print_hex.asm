@@ -8,16 +8,12 @@ print_hex:
     mov bx, HEX_OUT + 2
     mov cx, 4
 loop:
-    ; dx = 0x1234
     mov ax, dx
     and ax, 0xf000
     shr ax, 12
-    ; ax = 0x1
 
-    ; dx = 0x2340
     shl dx, 4
 
-    ; ax = char(ax)
     call to_char
     mov [bx], ax
     inc bx
