@@ -1,5 +1,6 @@
-CC=gcc
+CC=i386-elf-gcc
 NASM=nasm
+LD=i386-elf-ld
 
 CFLAGS=-m32 -ffreestanding -fno-PIC -g
 LDFLAGS=-melf_i386
@@ -24,7 +25,7 @@ BIN_FILE=os.image
 all: init $(BOOT_BIN) $(KERNEL_BIN) $(BIN_FILE)
 
 run: $(BIN_FILE)
-	$(QEMU) -hda $(BIN_FILE)
+	$(QEMU) -fda $(BIN_FILE)
 
 debug:
 	$(QEMU) -fda $(BIN_FILE) -gdb tcp::9999 -S
@@ -36,13 +37,11 @@ $(BOOT_BIN): $(BOOT_DIR)/boot.asm
 	$(NASM) $(NASMFLAGS) $< -f bin -I 'boot/' -o $(BOOT_BIN)
 
 
-$(KERNEL_BIN): src/kernel_entry.o src/kernel.o
-	ld -o $@ -Ttext 0x1000 $^ --oformat binary
+$(KERNEL_BIN): src/kernel_entry.o $(OBJ)
+	$(LD) -o $@ -Ttext 0x1000 $^ --oformat binary
 
 %kernel_entry.o: src/kernel_entry.asm
-	$(NASM) $@ -f elf -o src/kernel_entry.o
-
-
+	$(NASM) $^ -f elf -o src/kernel_entry.o
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
