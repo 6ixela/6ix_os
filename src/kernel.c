@@ -1,5 +1,7 @@
+#include "drivers/screen/screen.h"
 void main(void)
 {
-    char* video_memory = (char*)0xb8000;
-    *video_memory = 'X' ;
+    clear_screen();
+    print_str("Hello, from a new S3E!\n");
+    print_str("My name's Alexis VASSEUR");
 }
