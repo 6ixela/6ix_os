@@ -1,9 +1,5 @@
 #include "screen.h"
 
-#include "stdlib.h"
-
-
-
 struct Char* start_video_addr = (struct Char*)VIDEO_ADDRESS;
 
 size_t col = 0;

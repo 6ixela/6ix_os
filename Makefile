@@ -17,7 +17,7 @@ OBJ_DIR=obj
 BOOT_BIN=$(OBJ_DIR)/boot.bin
 KERNEL_BIN=$(OBJ_DIR)/kernel.bin
 
-KERNEL_SRC=$(wildcard src/*.c)
+KERNEL_SRC=$(wildcard src/*.c src/drivers/screen/*.c)
 OBJ=$(KERNEL_SRC:.c=.o)
 
 BIN_FILE=os.image
