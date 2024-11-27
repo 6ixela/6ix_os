@@ -1,6 +1,7 @@
 CC=i386-elf-gcc
 NASM=nasm
 LD=i386-elf-ld
+GDB=i386-elf-gdb
 
 CFLAGS=-m32 -ffreestanding -fno-PIC -g
 LDFLAGS=-melf_i386
@@ -20,15 +21,18 @@ KERNEL_BIN=$(OBJ_DIR)/kernel.bin
 KERNEL_SRC=$(wildcard src/*.c src/drivers/screen/*.c)
 OBJ=$(KERNEL_SRC:.c=.o)
 
-BIN_FILE=os.image
+BIN_FILE=os.bin
 
 all: init $(BOOT_BIN) $(KERNEL_BIN) $(BIN_FILE)
 
 run: $(BIN_FILE)
 	$(QEMU) -fda $(BIN_FILE)
 
-debug:
-	$(QEMU) -fda $(BIN_FILE) -gdb tcp::9999 -S
+debug: CFLAGS += -g
+debug: $(BIN_FILE) kernel_elf
+	$(QEMU) -s -S -fda $(BIN_FILE) &
+	$(GDB) -ex "target remote localhost:1234" -ex "symbol-file $(KERNEL_ELF)"
+
 
 $(BIN_FILE): $(BOOT_BIN) $(KERNEL_BIN)
 	cat $^ > $@
@@ -39,6 +43,9 @@ $(BOOT_BIN): $(BOOT_DIR)/boot.asm
 
 $(KERNEL_BIN): src/kernel_entry.o $(OBJ)
 	$(LD) -o $@ -Ttext 0x1000 $^ --oformat binary
+
+kernel_elf: src/kernel_entry.o $(OBJ)
+	$(LD) -o obj/$@ -Ttext 0x1000 $^
 
 %kernel_entry.o: src/kernel_entry.asm
 	$(NASM) $^ -f elf -o src/kernel_entry.o
@@ -52,3 +59,4 @@ init:
 clean:
 	$(RM) -rf $(OBJ_DIR)/*.o $(BIN_FILE)
 	$(RM) -rf $(OBJ) src/kernel_entry.o
+	$(RM) -rf $(OBJ_DIR)/*

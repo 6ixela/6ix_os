@@ -1,8 +1,8 @@
 ; null segment descriptor
 gdt_start:
 
-gdt_null: ; the mandatory null descriptor
-    dd 0x0 ; dd means define double word (i.e. 4 bytes)
+gdt_null:   ; the mandatory null descriptor
+    dd 0x0  ; dd means define double word (i.e. 4 bytes)
     dd 0x0
 
 ; code segment descriptor
@@ -29,7 +29,6 @@ gdt_data:
 
 gdt_end:
 
-; GDT descriptor
 gdt_descriptor:
     dw gdt_end - gdt_start - 1
     dd gdt_start
