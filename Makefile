@@ -18,8 +18,10 @@ OBJ_DIR=obj
 BOOT_BIN=$(OBJ_DIR)/boot.bin
 KERNEL_BIN=$(OBJ_DIR)/kernel.bin
 
-KERNEL_SRC=$(wildcard src/*.c src/drivers/screen/*.c)
+KERNEL_SRC=$(wildcard src/*.c src/*/*.c src/*/*/*.c)
+ASM_SRC=$(wildcard src/*.asm src/*/*.asm src/*/*/*.asm)
 OBJ=$(KERNEL_SRC:.c=.o)
+OBJ_ASM=$(ASM_SRC:.asm=.o)
 
 BIN_FILE=os.bin
 
@@ -41,17 +43,18 @@ $(BOOT_BIN): $(BOOT_DIR)/boot.asm
 	$(NASM) $(NASMFLAGS) $< -f bin -I 'boot/' -o $(BOOT_BIN)
 
 
-$(KERNEL_BIN): src/kernel_entry.o $(OBJ)
+$(KERNEL_BIN): $(OBJ_ASM) $(OBJ)
 	$(LD) -o $@ -Ttext 0x1000 $^ --oformat binary
 
-kernel_elf: src/kernel_entry.o $(OBJ)
+kernel_elf: $(OBJ_ASM) $(OBJ)
 	$(LD) -o obj/$@ -Ttext 0x1000 $^
 
-%kernel_entry.o: src/kernel_entry.asm
-	$(NASM) $^ -f elf -o src/kernel_entry.o
+%.o: %.asm
+	$(NASM) $^ -f elf -o $@
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -Iinclude -c $< -o $@
+
 
 init:
 	mkdir -p $(OBJ_DIR)
