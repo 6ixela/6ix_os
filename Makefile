@@ -61,5 +61,5 @@ init:
 
 clean:
 	$(RM) -rf $(OBJ_DIR)/*.o $(BIN_FILE)
-	$(RM) -rf $(OBJ) src/kernel_entry.o
+	$(RM) -rf $(OBJ) $(OBJ_ASM)
 	$(RM) -rf $(OBJ_DIR)/*

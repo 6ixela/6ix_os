@@ -12,5 +12,8 @@ typedef struct registers_t {
 } registers_t;
 
 void isr_handler(registers_t* regs);
+void irq_install_handler(int irq, void (*handler)(registers_t *r));
+void irq_uninstall_handler(int irq);
+void irq_handler(registers_t *regs);
 
 #endif /* ISR_H */
