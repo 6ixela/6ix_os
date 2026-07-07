@@ -3,26 +3,34 @@
 #include "../screen/screen.h"
 #include "../screen/io.h"
 
-#define IRQ1 33
+#define IRQ1 1
 
-static uint8_t *sc_name[] = {
-    "escape", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
-    "-", "=", "backspace", "Q", "W", "E", "R", "T", "Y", "U",
-    "I", "O", "P", "[", "]",  "enter", "lctrl", "A", "S", "D", "F",
-    "G", "H", "J", "K", "L", ";", "'", "`", "lshift", "\\", "Z", "X",
-    "C", "X", "C", "V", "B", "N", "M", ",", ".", "/", "rshift", "*",
-    "lalt", "space", "capsLock", "F1", "F2", "F3", "F4", "F5", "F6",
-    "F7", "F8", "F9", "F10", "NumLock"
+static const char scancode_chars[] = {
+    0, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', '\b',
+    'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n', 0,
+    'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', '`', 0, '\\',
+    'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 0, '*', 0, ' ', 0
 };
 
-static const uint8_t scancode_letter[] = {
-    
-};
-
-static void keyboard_callback(registers_t *regs) {
+static void keyboard_callback(registers_t *regs)
+{
     uint8_t scancode = inb(0x60);
-    print_str(sc_name[scancode]);
-    print_char('\n');
+
+    if (scancode & 0x80)
+    {
+        return;
+    }
+
+    if (scancode >= sizeof(scancode_chars) / sizeof(scancode_chars[0]))
+    {
+        return;
+    }
+
+    char c = scancode_chars[scancode];
+    if (c)
+    {
+        print_char(c);
+    }
 }
 
 void init_keyboard()

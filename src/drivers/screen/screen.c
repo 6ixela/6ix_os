@@ -15,9 +15,9 @@ uint8_t color = COLOR_BLACK << 4 | COLOR_WHITE;
 static void move_cursor()
 {
     uint16_t cursor_location = row * 80 + col;
-    outb(0x3D4, 14);                    // Tell the VGA board we are setting the high cursor byte.
-    outb(0x3D5, cursor_location >> 8);  // Send the high cursor byte.
-    outb(0x3D4, 15);                    // Tell the VGA board we are setting the low cursor byte.
+    outb(0x3D4, 14);
+    outb(0x3D5, cursor_location >> 8);
+    outb(0x3D4, 15);
     outb(0x3D5, cursor_location);
 }
 
@@ -52,6 +52,7 @@ static void print_newline()
     col = 0;
     row = row >= MAX_ROWS ? row : row + 1;
     scrool();
+    move_cursor();
 }
 
 // TODO Handle the backspace, tab
@@ -64,14 +65,14 @@ void print_char(char c)
         return;
     }
     
-    if (col > MAX_COLS)
+    if (col >= MAX_COLS)
     {
         print_newline();
     }
-    // scrool();
+
     start_video_addr[row * MAX_COLS + col] = value;
     col++;
-    
+    move_cursor();
 }
 
 void print_str(char* str)
