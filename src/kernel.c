@@ -2,6 +2,7 @@
 #include "drivers/keyboard/keyboard.h"
 #include "idt/idt.h"
 #include "timer/timer.h"
+#include "shell/shell.h"
 
 void main(void)
 {
@@ -15,4 +16,5 @@ void main(void)
     print_str("Hello, from a new S3E!\n");
     print_str("My name's Alexis VASSEUR\n");
     print_str("Keyboard ready. Type here:\n");
+    shell_init();
 }

@@ -64,6 +64,30 @@ void print_char(char c)
         print_newline();
         return;
     }
+
+    if (c == '\r')
+    {
+        col = 0;
+        move_cursor();
+        return;
+    }
+
+    if (c == '\b')
+    {
+        if (col > 0)
+        {
+            col--;
+        }
+        else if (row > 0)
+        {
+            row--;
+            col = MAX_COLS - 1;
+        }
+
+        start_video_addr[row * MAX_COLS + col] = (struct Char){ ' ', color };
+        move_cursor();
+        return;
+    }
     
     if (col >= MAX_COLS)
     {
