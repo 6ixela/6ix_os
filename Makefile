@@ -3,7 +3,7 @@ NASM=nasm
 LD=i386-elf-ld
 GDB=i386-elf-gdb
 
-CFLAGS=-m32 -ffreestanding -fno-PIC -g
+CFLAGS=-m32 -ffreestanding -fno-PIC
 LDFLAGS=-melf_i386
 
 NASMFLAGS=-felf32

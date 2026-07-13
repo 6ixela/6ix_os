@@ -155,7 +155,7 @@ void shell_init(void)
     shell_print_prompt();
 }
 
-void shell_handle_input(char c)
+void shell_handle_input(int c)
 {
     if (c == '\n')
     {

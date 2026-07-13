@@ -36,6 +36,7 @@ struct Char
 void clear_screen();
 void print_char(char c);
 void print_str(char* str);
+void print_hex(uint32_t n);
 
 // set the color
 // foreground: 0x0f

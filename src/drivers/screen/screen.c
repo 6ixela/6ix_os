@@ -9,9 +9,6 @@ size_t row = 0;
 
 uint8_t color = COLOR_BLACK << 4 | COLOR_WHITE;
 
-
-// cursor need to be split into 2 parts:
-// io part take 8bytes and cursor_location take 16 bytes
 static void move_cursor()
 {
     uint16_t cursor_location = row * 80 + col;
@@ -26,7 +23,6 @@ void set_color(uint8_t foreground, uint8_t background)
     color = background << 4 | foreground;
 }
 
-// TODO: do the action of scrooling
 static void scrool()
 {
     if (row >= MAX_ROWS)
@@ -53,6 +49,25 @@ static void print_newline()
     row = row >= MAX_ROWS ? row : row + 1;
     scrool();
     move_cursor();
+}
+
+void print_hex(uint32_t n)
+{
+    char hex[9] = {0};
+    for (int i = 7; i >= 0; i--)
+    {
+        uint8_t digit = n & 0xF;
+        if (digit < 10)
+        {
+            hex[i] = '0' + digit;
+        }
+        else
+        {
+            hex[i] = 'A' + (digit - 10);
+        }
+        n >>= 4;
+    }
+    print_str(hex);
 }
 
 // TODO Handle the backspace, tab
