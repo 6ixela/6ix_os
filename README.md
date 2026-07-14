@@ -1,35 +1,49 @@
 # 6ix_os
 
-6ix_os est un projet de système d'exploitation personnalisé, développé à partir de zéro. Ce projet vise à créer un OS léger.
+6ix_os is a personal operating system project built from scratch. The goal is to create a small, learning-oriented kernel with basic boot, memory, interrupt, and keyboard support.
 
-## Caractéristiques
+## What it does for now
 
-- Bootloader
-- Mode protégé 32 bits
-- Gestion des interruptions (IDT)
-- Pilotes de base (écran)
-- Timer système
+- Boots in 32-bit protected mode
+- Displays text on the screen through a simple VGA driver
+- Sets up an Interrupt Descriptor Table (IDT)
+- Handles basic hardware interrupts and timers
+- Supports a minimal keyboard input loop
+- Includes a simple command shell with commands such as `help`, `clear`, `about`, and `echo`
 
-## Structure du projet
+## Project structure
 
-- `boot/` : Contient les fichiers assembleur pour le processus de démarrage
-- `include/` : Fichiers d'en-tête partagés
-- `src/` : Code source principal
-  - `drivers/` : Pilotes de périphériques
-  - `idt/` : Gestion des interruptions
-  - `libc/` : Implémentation de fonctions de bibliothèque standard
-  - `timer/` : Gestion du timer système
+- `boot/` : Bootloader and startup assembly files
+- `include/` : Shared headers
+- `src/` : Main source code
+  - `drivers/` : Device drivers such as screen and keyboard
+  - `idt/` : Interrupt handling
+  - `libc/` : Basic library-style helpers
+  - `timer/` : System timer support
+  - `shell/` : Simple command-line shell
 
-## Prérequis
+## Requirements
 
-- GCC cross-compiler pour i386
-- NASM (Netwide Assembler)
-- QEMU pour l'émulation (optionnel)
+- i386 cross-compiler for GCC
+- NASM
+- QEMU (optional, for emulation)
 
-## Compilation
+## Build
 
-(TODO)
+Run the following command from the project root:
 
-## Exécution
+```bash
+make
+```
 
-(TODO)
+## Run
+
+You can launch the OS in QEMU with:
+
+```bash
+make run
+```
+
+## Current status
+
+This project is still in active development. The current focus is on building a stable boot process, keyboard input, basic screen output, and a small interactive shell.
