@@ -12,6 +12,9 @@ typedef struct registers_t {
 } registers_t;
 
 void isr_handler(registers_t* regs);
+void isr_initialize(void);
+int isr_install_exception_handler(uint8_t vector, void (*handler)(registers_t *regs));
+void isr_uninstall_exception_handler(uint8_t vector);
 void irq_install_handler(int irq, void (*handler)(registers_t *r));
 void irq_uninstall_handler(int irq);
 void irq_handler(registers_t *regs);

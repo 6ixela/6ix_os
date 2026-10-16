@@ -17,10 +17,14 @@
 - `include/` : Shared headers
 - `src/` : Main source code
   - `drivers/` : Device drivers such as screen and keyboard
+  - `gdt/` : Global Descriptor Table and Task State Segment
   - `idt/` : Interrupt handling
   - `libc/` : Basic library-style helpers
+  - `syscall/` : Restricted user-to-kernel system-call dispatcher
   - `timer/` : System timer support
   - `shell/` : Simple command-line shell
+  - `user/` : User-mode entry point
+- `tests/` : QEMU security regression kernel and its user-mode test program
 
 ## Requirements
 
@@ -43,6 +47,19 @@ You can launch the OS in QEMU with:
 ```bash
 make run
 ```
+
+## Tests
+
+Run the QEMU regression suite with:
+
+```bash
+make test
+```
+
+This requires the i386 cross-compiler, NASM, QEMU, and `timeout`. One dedicated
+test kernel covers the TSS, ring-3 stack switch, supervisor-page access
+protection, page-fault recovery, and validated system calls without adding test
+branches to the production kernel.
 
 ## Current status
 

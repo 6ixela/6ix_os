@@ -2,7 +2,6 @@ global idt_flush
 idt_flush:
     mov eax, [esp+4]
     lidt [eax]
-    sti
     ret
 
 %macro ISR_NOERRCODE 1
@@ -49,7 +48,7 @@ ISR_ERRCODE 13
 ISR_ERRCODE 14
 ISR_NOERRCODE 15
 ISR_NOERRCODE 16
-ISR_NOERRCODE 17
+ISR_ERRCODE 17
 ISR_NOERRCODE 18
 ISR_NOERRCODE 19
 ISR_NOERRCODE 20
@@ -110,7 +109,6 @@ isr_common_stub:
 
     popa
     add esp, 8
-    sti
     iret
 
 extern irq_handler
@@ -139,5 +137,4 @@ irq_common_stub:
 
     popa
     add esp, 8
-    sti
     iret

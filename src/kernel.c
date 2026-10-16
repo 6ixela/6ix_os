@@ -1,11 +1,13 @@
-#include "drivers/screen/screen.h"
 #include "drivers/keyboard/keyboard.h"
+#include "drivers/screen/screen.h"
+#include "gdt/gdt.h"
 #include "idt/idt.h"
-#include "timer/timer.h"
 #include "shell/shell.h"
+#include "timer/timer.h"
 
 void main(void)
 {
+    init_gdt();
     init_idt();
     init_keyboard();
     init_timer(100);

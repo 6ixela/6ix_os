@@ -12,6 +12,7 @@ extern void idt_flush(uint32_t);
 
 void init_idt()
 {
+    isr_initialize();
     idt_ptr.limit = sizeof(idt32) * 256 - 1;
     idt_ptr.base = (uint32_t) &idt;
 
@@ -83,7 +84,7 @@ void init_idt()
     set_idt(47, (uint32_t)irq15, 0x08, 0x8E);
 
 
-    set_idt(128, (uint32_t)isr128, 0x08, 0x8E); //System calls
+    set_idt(128, (uint32_t)isr128, 0x08, 0xEE);
     set_idt(177, (uint32_t)isr177, 0x08, 0x8E); //System calls
 
     idt_flush((uint32_t)&idt_ptr);
@@ -95,5 +96,5 @@ void set_idt(uint8_t num, uint32_t base, uint16_t selector, uint8_t flags)
     idt[num].offset_2 = (uint16_t)((base >> 16) & 0xFFFF);
     idt[num].selector = selector;
     idt[num].zero = 0;
-    idt[num].flags = flags | 0x60;
+    idt[num].flags = flags;
 }

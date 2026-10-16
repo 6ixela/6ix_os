@@ -43,4 +43,4 @@ void print_hex(uint32_t n);
 // background: 0xf0
 void set_color(uint8_t foreground, uint8_t background);
 
-#endif /* !SCREEN_H */
+#endif /* SCREEN_H */
